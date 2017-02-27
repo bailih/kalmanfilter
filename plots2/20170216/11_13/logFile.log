@@ -1,0 +1,81 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.28999]
+Using default value for key balance_current: 0
+init_soc: [0.28999, 0.72967]
+Using default value for key balance_current: 0
+init_soc: [0.28999, 0.72967, 0.027400000000000008]
+Using default value for key balance_current: 0
+init_soc: [0.28999, 0.72967, 0.027400000000000008, 0.5199900000000001]
+Using default value for key balance_current: 0
+init_soc: [0.28999, 0.72967, 0.027400000000000008, 0.5199900000000001, 0.27999]
+Using default value for key balance_current: 0
+iniV: [3.835]
+iniV: [3.835, 3.994]
+iniV: [3.835, 3.994, 3.63]
+iniV: [3.835, 3.994, 3.63, 3.875]
+iniV: [3.835, 3.994, 3.63, 3.875, 3.832]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 2
+case: [1, 2]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+
+Expected SoH: 79% -> 7110 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 3
+converge step (5): 122
+SoH Case 3: 5135.766226012166
+SoH Case 4: 9000.0
+SoH Case 5: 3613.6079145749177
+SoH Case 6: 6699.148406465944
+
+Expected SoH: 77% -> 6930 A.s
+converge step (3): 1
+converge step (4): 1
+converge step (6): 1
+converge step (5): 157
+SoH Case 3: 4395.053893979973
+SoH Case 4: 8183.964486414922
+SoH Case 5: 1727.152423080384
+SoH Case 6: 8193.213395325067
+
+Expected SoH: 69% -> 6210 A.s
+converge step (2): 3
+converge step (1): 508
+SoH Case 1: 6166.780028942321
+SoH Case 2: 8712.45810706958
+
+Expected SoH: 57% -> 5130 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 4
+converge step (5): 146
+SoH Case 3: 4607.622364455422
+SoH Case 4: 8995.118802929575
+SoH Case 5: 2203.688829075909
+SoH Case 6: 7053.830161769884
+
+Expected SoH: 50% -> 4500 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 3
+converge step (5): 150
+SoH Case 3: 4984.742480883295
+SoH Case 4: 9000.0
+SoH Case 5: 3092.350391963651
+SoH Case 6: 6088.848301869312

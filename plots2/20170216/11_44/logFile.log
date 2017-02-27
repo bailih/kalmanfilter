@@ -1,0 +1,77 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.44795999999999997]
+Using default value for key balance_current: 0
+init_soc: [0.44795999999999997, 0.31999]
+Using default value for key balance_current: 0
+init_soc: [0.44795999999999997, 0.31999, 0.01]
+Using default value for key balance_current: 0
+init_soc: [0.44795999999999997, 0.31999, 0.01, 0.19999000000000003]
+Using default value for key balance_current: 0
+init_soc: [0.44795999999999997, 0.31999, 0.01, 0.19999000000000003, 0.23826]
+Using default value for key balance_current: 0
+iniV: [3.849]
+iniV: [3.849, 3.839]
+iniV: [3.849, 3.839, 3.539]
+iniV: [3.849, 3.839, 3.539, 3.788]
+iniV: [3.849, 3.839, 3.539, 3.788, 3.818]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 2
+case: [1, 2]
+dim: 2
+case: [1, 2]
+dim: 4
+case: [3, 4, 5, 6]
+
+Expected SoH: 100% -> 9000 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 4
+converge step (5): 153
+SoH Case 3: 4624.533879444916
+SoH Case 4: 8597.286240843412
+SoH Case 5: 2250.873373722631
+SoH Case 6: 6477.878048818853
+
+Expected SoH: 97% -> 8730 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 4
+converge step (5): 147
+SoH Case 3: 4639.166756619484
+SoH Case 4: 8959.881464415947
+SoH Case 5: 2314.1837028843197
+SoH Case 6: 5536.855546000921
+
+Expected SoH: 94% -> 8460 A.s
+converge step (2): 8
+converge step (1): 322
+SoH Case 1: 8180.18657562333
+SoH Case 2: 9000.0
+
+Expected SoH: 86% -> 7740 A.s
+converge step (2): 1
+converge step (1): 403
+SoH Case 1: 4042.761629108073
+SoH Case 2: 7772.272170692051
+
+Expected SoH: 80% -> 7200 A.s
+converge step (6): 1
+converge step (3): 3
+converge step (4): 3
+converge step (5): 119
+SoH Case 3: 5310.711350960334
+SoH Case 4: 9000.0
+SoH Case 5: 4030.6631196626054
+SoH Case 6: 6783.907253421367

@@ -1,0 +1,23 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.0]
+Using default value for key balance_current: 0
+iniV: [3.697]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+
+Expected SoH: 39% -> 3510 A.s
+converge step (0): 3
+converge step (5): 4
+converge step (4): 19
+converge step (2): 35
+converge step (1): 303
+converge step (3): 380
+converge step (6): 4093
+SoH Case 0: 7831.767342553177
+SoH Case 1: 8133.018971646107
+SoH Case 2: 8997.055204734348
+SoH Case 3: 9000.0
+SoH Case 4: 6880.010475089788
+SoH Case 5: 8029.656708178622
+SoH Case 6: 8453.384292075414

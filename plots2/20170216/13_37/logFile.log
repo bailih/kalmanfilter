@@ -1,0 +1,298 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+iniV: [3.704]
+iniV: [3.704, 3.91]
+iniV: [3.704, 3.91, 3.765]
+iniV: [3.704, 3.91, 3.765, 3.809]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473, 3.422]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473, 3.422, 3.489]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473, 3.422, 3.489, 3.374]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+dim: 7
+case: [0, 1, 2, 3, 4, 5, 6]
+
+Expected SoH: 19% -> 1710 A.s
+converge step (0): 3
+converge step (5): 3
+converge step (2): 28
+converge step (4): 50
+converge step (3): 53
+converge step (1): 1681
+converge step (6): 10244
+SoH Case 0: 2518.7632471483125
+SoH Case 1: 7584.357517500537
+SoH Case 2: 8562.233558794884
+SoH Case 3: 4791.169096042581
+SoH Case 4: 8578.696634390533
+SoH Case 5: 2706.718306353374
+SoH Case 6: 4155.344736002563
+
+Expected SoH: 24% -> 2160 A.s
+converge step (2): 1
+converge step (3): 1
+converge step (0): 4
+converge step (4): 15
+converge step (5): 133
+converge step (1): 1868
+SoH Case 0: 2027.16415439254
+SoH Case 1: 5956.7477250280745
+SoH Case 2: 8999.66131495625
+SoH Case 3: 4595.150061527162
+SoH Case 4: 8886.891983906065
+SoH Case 5: 2460.4204193880882
+SoH Case 6: 8208.411577234976
+
+Expected SoH: 34% -> 3060 A.s
+converge step (0): 3
+converge step (2): 3
+converge step (5): 6
+converge step (4): 33
+converge step (3): 52
+converge step (1): 1519
+converge step (6): 8586
+SoH Case 0: 3921.5572700557086
+SoH Case 1: 3959.3007609351707
+SoH Case 2: 9000.0
+SoH Case 3: 5152.334947599089
+SoH Case 4: 8929.759108114695
+SoH Case 5: 3589.546515079328
+SoH Case 6: 5217.271743067774
+
+Expected SoH: 39% -> 3510 A.s
+converge step (2): 1
+converge step (0): 3
+converge step (5): 12
+converge step (4): 30
+converge step (3): 50
+converge step (1): 1364
+converge step (6): 8576
+SoH Case 0: 3666.6833534691814
+SoH Case 1: 4794.331762735942
+SoH Case 2: 9000.0
+SoH Case 3: 5061.315340540082
+SoH Case 4: 8946.567117552335
+SoH Case 5: 3439.4310339532008
+SoH Case 6: 4921.12603004936
+
+Expected SoH: 43% -> 3870 A.s
+converge step (2): 1
+converge step (3): 1
+converge step (0): 4
+converge step (5): 17
+converge step (4): 28
+converge step (1): 1586
+converge step (6): 8926
+SoH Case 0: 2963.2932362365073
+SoH Case 1: 8608.888427748172
+SoH Case 2: 9000.0
+SoH Case 3: 4891.153928449226
+SoH Case 4: 8931.325371875451
+SoH Case 5: 3102.8967128147624
+SoH Case 6: 4414.22593349576
+
+Expected SoH: 51% -> 4590 A.s
+converge step (5): 2
+converge step (0): 3
+converge step (2): 50
+converge step (4): 55
+converge step (1): 148
+converge step (3): 252
+converge step (6): 8329
+SoH Case 0: 6087.515384610051
+SoH Case 1: 6166.465524604796
+SoH Case 2: 9000.0
+SoH Case 3: 5895.305492936997
+SoH Case 4: 9000.0
+SoH Case 5: 5308.030275899914
+SoH Case 6: 7046.78193177875
+
+Expected SoH: 57% -> 5130 A.s
+converge step (0): 3
+converge step (5): 3
+converge step (2): 36
+converge step (4): 52
+converge step (1): 168
+converge step (3): 199
+converge step (6): 8285
+SoH Case 0: 5427.4545113584545
+SoH Case 1: 5505.256172561965
+SoH Case 2: 9000.0
+SoH Case 3: 5546.366735211079
+SoH Case 4: 8980.975140972738
+SoH Case 5: 4758.777485016965
+SoH Case 6: 6439.472709646296
+
+Expected SoH: 70% -> 6300 A.s
+converge step (0): 2
+converge step (5): 2
+converge step (1): 48
+converge step (2): 65
+converge step (4): 232
+converge step (3): 715
+converge step (6): 8693
+SoH Case 0: 6374.144928549589
+SoH Case 1: 6399.979786421749
+SoH Case 2: 9000.0
+SoH Case 3: 6225.176248568631
+SoH Case 4: 8535.310683175434
+SoH Case 5: 5620.286825132419
+SoH Case 6: 7252.7243741829
+
+Expected SoH: 79% -> 7110 A.s
+converge step (0): 2
+converge step (5): 2
+converge step (1): 17
+converge step (2): 75
+converge step (6): 307
+converge step (4): 319
+converge step (3): 2419
+SoH Case 0: 7708.072947230529
+SoH Case 1: 7652.335657234669
+SoH Case 2: 8999.973955776213
+SoH Case 3: 7638.112884593063
+SoH Case 4: 8164.95918410141
+SoH Case 5: 6731.8258826037145
+SoH Case 6: 7993.212799266796
+
+Expected SoH: 80% -> 7200 A.s
+converge step (0): 1
+converge step (1): 1
+converge step (5): 1
+converge step (6): 1
+converge step (2): 90
+converge step (4): 365
+converge step (3): 3290
+SoH Case 0: 7736.179544956516
+SoH Case 1: 7715.969217837331
+SoH Case 2: 8999.819573476756
+SoH Case 3: 7692.057057153291
+SoH Case 4: 8043.509802339501
+SoH Case 5: 6766.190146705017
+SoH Case 6: 7876.620198814335
+
+Expected SoH: 85% -> 7650 A.s
+converge step (0): 1
+converge step (1): 1
+converge step (5): 1
+converge step (6): 1
+converge step (2): 105
+converge step (4): 409
+converge step (3): 3837
+SoH Case 0: 8274.040017694597
+SoH Case 1: 8267.871990800837
+SoH Case 2: 8999.981844796297
+SoH Case 3: 8326.983007540834
+SoH Case 4: 8562.345063991539
+SoH Case 5: 7241.037728977679
+SoH Case 6: 8295.452350967196
+
+Expected SoH: 87% -> 7830 A.s
+converge step (0): 2
+converge step (5): 2
+converge step (1): 18
+converge step (2): 90
+converge step (6): 255
+converge step (4): 342
+converge step (3): 2453
+SoH Case 0: 8278.862661784733
+SoH Case 1: 8218.883498835177
+SoH Case 2: 9000.0
+SoH Case 3: 8212.892303539034
+SoH Case 4: 8396.490907322674
+SoH Case 5: 7221.748462852166
+SoH Case 6: 8402.464307180133
+
+Expected SoH: 94% -> 8460 A.s
+converge step (0): 1
+converge step (1): 1
+converge step (5): 1
+converge step (6): 1
+converge step (2): 118
+converge step (4): 397
+converge step (3): 2633
+SoH Case 0: 8934.010429919388
+SoH Case 1: 8924.617213105801
+SoH Case 2: 8999.709348561151
+SoH Case 3: 8974.86860531304
+SoH Case 4: 8999.999209729514
+SoH Case 5: 7803.103330328821
+SoH Case 6: 8935.765306024929

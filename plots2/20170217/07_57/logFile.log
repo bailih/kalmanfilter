@@ -1,0 +1,32 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+iniV: [3.697]
+iniV: [3.697, 3.795]
+iniV: [3.697, 3.795, 3.666]
+dim: 2
+case: [1, 2]
+dim: 2
+case: [1, 2]
+dim: 2
+case: [1, 2]
+
+Expected SoH: 39% -> 6739.2 A.s
+converge step (1): 2
+converge step (2): 35
+SoH Case 1: 11342.978215328478
+SoH Case 2: 17111.847178955602
+
+Expected SoH: 43% -> 7430.4 A.s
+converge step (2): 1
+converge step (1): 5
+SoH Case 1: 8519.93000749917

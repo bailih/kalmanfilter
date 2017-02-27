@@ -1,0 +1,84 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.80663]
+Using default value for key balance_current: 0
+init_soc: [0.80663, 0.61999]
+Using default value for key balance_current: 0
+init_soc: [0.80663, 0.61999, 0.62999]
+Using default value for key balance_current: 0
+init_soc: [0.80663, 0.61999, 0.62999, 0.54999]
+Using default value for key balance_current: 0
+iniV: [4.043]
+iniV: [4.043, 3.929]
+iniV: [4.043, 3.929, 3.933]
+iniV: [4.043, 3.929, 3.933, 3.889]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+
+Expected SoH: 39% -> 3510.0 A.s
+converge step (4): 1
+converge step (6): 1
+converge step (5): 176
+converge step (3): 815
+SoC Init Case 3: 3541.204984727287
+SoH Case 3: 4164.741530133677
+SoC Init Case 4: 7148.295760231875
+SoH Case 4: 7910.966884809482
+SoC Init Case 5: 295.8994242696381
+SoH Case 5: 2466.705063277394
+SoC Init Case 6: 7329.120264808173
+SoH Case 6: 8230.11561026749
+
+Expected SoH: 37% -> 3330.0 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 3
+converge step (5): 156
+SoC Init Case 3: 2889.075028165863
+SoH Case 3: 4461.032912479067
+SoC Init Case 4: 6686.162084496596
+SoH Case 4: 8504.096179334494
+SoC Init Case 5: 247.57787280827318
+SoH Case 5: 1857.3001483765347
+SoC Init Case 6: 5732.760377580568
+SoH Case 6: 7475.13568163519
+
+Expected SoH: 31% -> 2790.0 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 3
+converge step (5): 164
+SoC Init Case 3: 2900.9049291097635
+SoH Case 3: 4467.932331447564
+SoC Init Case 4: 6511.723450653553
+SoH Case 4: 8322.012264585164
+SoC Init Case 5: 245.14465107876364
+SoH Case 5: 1828.4469775507405
+SoC Init Case 6: 5825.02458555347
+SoH Case 6: 7473.054549731729
+
+Expected SoH: 17% -> 1530.0 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 4
+converge step (5): 157
+SoC Init Case 3: 2764.1231890703816
+SoH Case 3: 4521.374370449911
+SoC Init Case 4: 6454.050402714028
+SoH Case 4: 8429.025836213406
+SoC Init Case 5: 237.2619196020204
+SoH Case 5: 1985.9514083275587
+SoC Init Case 6: 5154.639662201217
+SoH Case 6: 7054.696020756156

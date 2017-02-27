@@ -1,0 +1,103 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+init_soc: [0.75744]
+Using default value for key balance_current: 0
+init_soc: [0.75744, 0.54999]
+Using default value for key balance_current: 0
+init_soc: [0.75744, 0.54999, 0.22999000000000003]
+Using default value for key balance_current: 0
+init_soc: [0.75744, 0.54999, 0.22999000000000003, 0.23999000000000004]
+Using default value for key balance_current: 0
+init_soc: [0.75744, 0.54999, 0.22999000000000003, 0.23999000000000004, 0.5199900000000001]
+Using default value for key balance_current: 0
+init_soc: [0.75744, 0.54999, 0.22999000000000003, 0.23999000000000004, 0.5199900000000001, 0.22999000000000003]
+Using default value for key balance_current: 0
+iniV: [4.011]
+iniV: [4.011, 3.889]
+iniV: [4.011, 3.889, 3.809]
+iniV: [4.011, 3.889, 3.809, 3.816]
+iniV: [4.011, 3.889, 3.809, 3.816, 3.873]
+iniV: [4.011, 3.889, 3.809, 3.816, 3.873, 3.808]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+
+Expected SoH: 13% -> 1170 A.s
+converge step (3): 1
+converge step (4): 1
+converge step (6): 1
+converge step (5): 168
+SoH Case 3: 4234.561832194855
+SoH Case 4: 7904.43333966804
+SoH Case 5: 1427.9577255377947
+SoH Case 6: 7988.217357005073
+
+Expected SoH: 17% -> 1530 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 4
+converge step (5): 157
+SoH Case 3: 4521.374370449911
+SoH Case 4: 8429.025836213406
+SoH Case 5: 1985.9514083275587
+SoH Case 6: 7054.696020756156
+
+Expected SoH: 21% -> 1890 A.s
+converge step (6): 1
+converge step (4): 3
+converge step (5): 159
+converge step (3): 523
+SoH Case 3: 4621.249621774229
+SoH Case 4: 8811.453357330038
+SoH Case 5: 2213.5514571735343
+SoH Case 6: 4776.494476896219
+
+Expected SoH: 22% -> 1980 A.s
+converge step (6): 1
+converge step (4): 3
+converge step (5): 155
+converge step (3): 478
+SoH Case 3: 4635.1235530611575
+SoH Case 4: 8697.534619109168
+SoH Case 5: 2277.9954042676877
+SoH Case 6: 4883.274872186793
+
+Expected SoH: 24% -> 2160 A.s
+converge step (3): 1
+converge step (6): 1
+converge step (4): 3
+converge step (5): 150
+SoH Case 3: 4603.851413283736
+SoH Case 4: 8795.081839494094
+SoH Case 5: 2224.129790177677
+SoH Case 6: 7007.59470726954
+
+Expected SoH: 30% -> 2700 A.s
+converge step (6): 1
+converge step (3): 3
+converge step (4): 4
+converge step (5): 148
+SoH Case 3: 4932.90941524355
+SoH Case 4: 8792.681156754412
+SoH Case 5: 2899.3350615692957
+SoH Case 6: 5544.090287600345
+Backend TkAgg is interactive backend. Turning interactive mode on.

@@ -1,0 +1,197 @@
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+[[  1.00000000e-05   0.00000000e+00]
+ [  0.00000000e+00   1.00000000e-04]]
+Using default value for key balance_current: 0
+init_soc: [0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+Using default value for key balance_current: 0
+init_soc: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+iniV: [3.704]
+iniV: [3.704, 3.91]
+iniV: [3.704, 3.91, 3.765]
+iniV: [3.704, 3.91, 3.765, 3.809]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473, 3.422]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473, 3.422, 3.489]
+iniV: [3.704, 3.91, 3.765, 3.809, 3.826, 3.663, 3.699, 3.574, 3.487, 3.473, 3.422, 3.489, 3.374]
+dim: 2
+case: [1, 2]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 2
+case: [1, 2]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 4
+case: [3, 4, 5, 6]
+dim: 2
+case: [1, 2]
+dim: 2
+case: [1, 2]
+dim: 2
+case: [1, 2]
+dim: 1
+case: [0]
+dim: 1
+case: [0]
+dim: 1
+case: [0]
+dim: 1
+case: [0]
+dim: 1
+case: [0]
+
+Expected SoH: 19% -> 1710.0 A.s
+converge step (2): 28
+converge step (1): 1681
+SoC Init Case 1: 145.70495048623113
+SoH Case 1: 7584.357517499593
+SoC Init Case 2: 5644.147462107267
+SoH Case 2: 8562.23356263782
+
+Expected SoH: 24% -> 2160.0 A.s
+converge step (3): 1
+converge step (4): 15
+converge step (5): 133
+SoC Init Case 3: 2638.092755644357
+SoH Case 3: 4595.150061526564
+SoC Init Case 4: 6762.561731995124
+SoH Case 4: 8886.891984350274
+SoC Init Case 5: 275.0074622357209
+SoH Case 5: 2460.420419387194
+SoC Init Case 6: 974.0953039007252
+SoH Case 6: 8208.411577234869
+
+Expected SoH: 34% -> 3060.0 A.s
+converge step (2): 3
+converge step (1): 1519
+SoC Init Case 1: 18.947682255267246
+SoH Case 1: 3959.300760938265
+SoC Init Case 2: 5080.877026170606
+SoH Case 2: 9000.0
+
+Expected SoH: 39% -> 3510.0 A.s
+converge step (5): 12
+converge step (4): 30
+converge step (3): 50
+converge step (6): 8576
+SoC Init Case 3: 1562.5364739888812
+SoH Case 3: 5061.315340538805
+SoC Init Case 4: 5297.352964854366
+SoH Case 4: 8946.567116521624
+SoC Init Case 5: 198.7653818379515
+SoH Case 5: 3439.4310339536232
+SoC Init Case 6: 1429.2830440028233
+SoH Case 6: 4921.126030051593
+
+Expected SoH: 43% -> 3870.0 A.s
+converge step (3): 1
+converge step (5): 17
+converge step (4): 28
+converge step (6): 8926
+SoC Init Case 3: 1929.6072028643541
+SoH Case 3: 4891.153928449413
+SoC Init Case 4: 5805.520694304259
+SoH Case 4: 8931.32537201036
+SoC Init Case 5: 227.04786593674484
+SoH Case 5: 3102.8967128137533
+SoC Init Case 6: 1472.0248723499299
+SoH Case 6: 4414.225933496546
+
+Expected SoH: 51% -> 4590.0 A.s
+converge step (2): 50
+converge step (1): 148
+SoC Init Case 1: 224.27612033267766
+SoH Case 1: 6166.46552461522
+SoC Init Case 2: 2961.066455818678
+SoH Case 2: 9000.0
+
+Expected SoH: 57% -> 5130.0 A.s
+converge step (2): 36
+converge step (1): 168
+SoC Init Case 1: 237.5384918036164
+SoH Case 1: 5505.256172569623
+SoC Init Case 2: 3603.4759134770256
+SoH Case 2: 9000.0
+
+Expected SoH: 70% -> 6300.0 A.s
+converge step (1): 48
+converge step (2): 65
+SoC Init Case 1: 132.32210745211168
+SoH Case 1: 6399.979786423998
+SoC Init Case 2: 2643.406391139285
+SoH Case 2: 9000.0
+
+Expected SoH: 79% -> 7110.0 A.s
+converge step (0): 2
+SoC Init Case 0: 63.55873865718028
+SoH Case 0: 7708.072947265766
+
+Expected SoH: 80% -> 7200.0 A.s
+converge step (0): 1
+SoC Init Case 0: 63.11172596120772
+SoH Case 0: 7736.179544947443
+
+Expected SoH: 85% -> 7650.0 A.s
+converge step (0): 1
+SoC Init Case 0: 37.58429279260045
+SoH Case 0: 8274.04001779431
+
+Expected SoH: 87% -> 7830.0 A.s
+converge step (0): 2
+SoC Init Case 0: 64.78075297499494
+SoH Case 0: 8278.862661838928
+
+Expected SoH: 94% -> 8460.0 A.s
+converge step (0): 1
+SoC Init Case 0: 4.989916701503202
+SoH Case 0: 8934.01042975271

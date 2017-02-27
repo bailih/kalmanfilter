@@ -1,0 +1,8 @@
+.idea/*
+*.csv
+*.pyc
+*.png
+*.txt
+*.asv
+utility_scripts/*
+Workbooks/*
