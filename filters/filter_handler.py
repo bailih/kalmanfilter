@@ -433,6 +433,21 @@ class FilterHandler:
         else:
             return 0
 
+    # def get_voltage_plot(self, t: list, abs_version, version_offset):
+    #     soh = ()
+    #     filters = self.filters
+    #
+    #     for key in filters:
+    #         filter_dict = filters[key]
+    #         if 'voltage' in filter_dict:
+    #             temp = []
+    #             for i in range(len(filter_dict['voltage'])):
+    #                 temp.append(filter_dict['soh'][i][abs_version])
+    #             soh += (t, temp, filter_dict['main_colour'])
+    #     print("SoH Case {}: {}".format(abs_version + version_offset, soh[-2][-1]))
+    #     lastsoh = soh[-2][-1]
+    #     return soh, lastsoh
+
     def get_ekf_soc(self):
 
         if 'ekf' in self.filters:

@@ -10,7 +10,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 
 import config
-from classes import InputFile, FrobeniusWrapper
+from classes import InputFile, FrobeniusWrapper, IC_handler
 from filters import FilterHandler
 
 
@@ -149,30 +149,36 @@ for i in range(len(files_to_compare)):
         hex_string = '#{:0>6}'.format(str(hex_value).replace('0x', ''))
         colours.append(hex_string)
 
-
-frob_fig = plt.figure()
-frob_fig.suptitle('Frobenius Norm')
-frob_plot = frob_fig.add_subplot(111)
-
-frob_slope_fig = plt.figure()
-frob_slope_fig.suptitle('Frobenius Min slope')
-frob_slope_plot = frob_slope_fig.add_subplot(111)
-
 soh_fig = plt.figure()
 soh_fig.suptitle('Estimated SOH')
 soh_plot = soh_fig.add_subplot(111)
+
+if '-fb' in sys.argv:
+    frob_fig = plt.figure()
+    frob_fig.suptitle('Frobenius Norm')
+    frob_plot = frob_fig.add_subplot(111)
+
+    frob_slope_fig = plt.figure()
+    frob_slope_fig.suptitle('Frobenius Min slope')
+    frob_slope_plot = frob_slope_fig.add_subplot(111)
+
+    att_mag_fig = plt.figure()
+    att_mag_fig.suptitle('Attribute magnitudes')
+    att_mag_plot = att_mag_fig.add_subplot(111)
+
+    att_angle_fig = plt.figure()
+    att_angle_fig.suptitle('Attribute angles')
+    att_angle_plot = att_angle_fig.add_subplot(111)
+
+if '-ic' in sys.argv:
+    ic_fig = plt.figure()
+    ic_fig.suptitle('IC curve')
+    ic_plot = ic_fig.add_subplot(111)
 
 # att_fig = plt.figure()
 # att_fig.suptitle('Attribute vectors')
 # att_plot = att_fig.add_subplot(111, projection='3d')
 
-att_mag_fig = plt.figure()
-att_mag_fig.suptitle('Attribute magnitudes')
-att_mag_plot = att_mag_fig.add_subplot(111)
-
-att_angle_fig = plt.figure()
-att_angle_fig.suptitle('Attribute angles')
-att_angle_plot = att_angle_fig.add_subplot(111)
 
 markers = ['.', 'o', '*', '+', 'x', 'X', 'D', 'p', 'h', 's']
 markers_used = []
@@ -181,13 +187,18 @@ _file_handles = []
 index = 0
 for input_file, handler in zip(input_files, handlers):
     print('\nExpected SoH: {}% -> {} A.s'.format(known_sohs[index],
-                                                 known_sohs[index] * handler.filters['ekfi_coul']['filter'].p[0][
-                                                     'cnom'] / 100))
+                                                 known_sohs[index] * handler.filters['ekfi_coul']['filter'].p[0]['cnom'] / 100))
 
     cases = handler.filters['ekfi_coul']['filter'].absolute_index
     time = []
     num_of_params = 0
     sohs = []
+    icv = []
+    icq = []
+    ekf_voltage = []
+    ekf_soc = []
+
+    xs, ys, zs = [[0] for _ in range(3)]
 
     if '-cki' in sys.argv:
         abs_case = handler.filters['ekfi_coul']['filter'].absolute_index
@@ -197,39 +208,13 @@ for input_file, handler in zip(input_files, handlers):
         voltage, current, dt = map(float, line[:3])
         handler.update(dt, voltage, current, 1)
         time.append(time[-1] + dt if time else dt)
+        if '-ic' in sys.argv:
 
-    xs, ys, zs = [[0] for _ in range(3)]
-
-    frobs = handler.get_frob_plots_2(time, abs_case)
-
-    # print(frobs[1])
-
-    for i in range(0, len(frobs[1][0])):
-        frob = FrobeniusWrapper(time, frobs[1][i])
-
-        normal_frob = frob.normalized
-
-        gaus_frob = frob.normalized.gaussianized
-
-        frob_plot.plot(gaus_frob.time, gaus_frob.data, colours[index])
-
-        ys.append(gaus_frob.min_slope[0])
-
-        mini_slope, steepest_point = frob.min_slope
-
-        if not cases[i] in markers_used:
-            markers_used.append(cases[i])
-
-        frob_slope_plot.plot(known_sohs[index], mini_slope, colours[index], marker=markers[cases[i]])
-        frob_plot.plot(frob.time[steepest_point], frob[steepest_point], colours[index], marker=markers[cases[i]])
-
-        if len(normal_frob.trough_value) > 0:
-            xs.append(normal_frob.trough_value[0])
-        else:
-            xs.append(0)
+            ekf_voltage.append(handler.get_ekf_voltage()[0])
+            ekf_soc.append(handler.get_ekf_soc()[0])
 
     for i in range(num_of_params):
-        handler.get_soc_init_plots(time, i, abs_case[i] - abs_case[0], abs_case[0])
+        handler.get_soc_init_plots(time, i, abs_case[i] - abs_case[0], abs_case[0])      ##  For printing the soc init
         soh, lastsoh = handler.get_soh_plots_2(time, i, abs_case[i] - abs_case[0], abs_case[0])
         inputsoc, volt, lastinputsoc = handler.get_plotables_2(time, abs_case[i] - abs_case[0], abs_case[0])
 
@@ -240,40 +225,103 @@ for input_file, handler in zip(input_files, handlers):
                           xytext=(sohs[i][0][-1] + 200, sohs[i][1][-1]),
                           arrowprops=dict(facecolor='black', headwidth=2))
 
-        normal_soh = FrobeniusWrapper(time, soh[1]).normalized
-        zs.append(normal_soh.min_slope[0])
+        if '-fb' in sys.argv:
+            normal_soh = FrobeniusWrapper(time, soh[1]).normalized
+            zs.append(normal_soh.min_slope[0])
 
-    # att_plot.plot(xs=xs, ys=ys, zs=zs, c=colours[index])
-    for i in range(1, len(frobs[1][0]) + 1):
+    if '-ic' in sys.argv:
+        ICvoltage = []
+        ICdQdV = []
 
-        _min = 1000
-        _max = -1
-        for j in known_sohs:
-            _min = j if j < _min else _min
-            _max = j if j > _max else _max
+        ICcurve = IC_handler(ekf_voltage, ekf_soc)
 
-        x_len = _max - _min
+        ICvoltage = ICcurve.get_IC_volt()
 
-        r, theta, phi = spherical_coords(xs[i], ys[i], zs[i])
+        ICdQdV = ICcurve.get_IC_QV()
 
-        att_mag_plot.plot(known_sohs[index], r, colours[index], marker='.')
-        att_angle_plot.plot(known_sohs[index], phi, colours[index], marker='^')
-        att_angle_plot.plot(known_sohs[index], theta, colours[index], marker='v')
-        att_angle_plot.plot(known_sohs[index], phi + theta, colours[index], marker='D')
+        ICpeak = ICcurve.get_IC_peak()
 
-        att_mag_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, r),
-                              xytext=(known_sohs[index] + x_len * 0.05, r),
-                              arrowprops=dict(facecolor='black', headwidth=2, width=1))
 
-        att_angle_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, phi),
-                                xytext=(known_sohs[index] + x_len * 0.05, phi),
-                                arrowprops=dict(facecolor='black', headwidth=2, width=1))
-        att_angle_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, theta),
-                                xytext=(known_sohs[index] + x_len * 0.05, theta),
-                                arrowprops=dict(facecolor='black', headwidth=2, width=1))
-        att_angle_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, phi + theta),
-                                xytext=(known_sohs[index] + x_len * 0.05, phi + theta),
-                                arrowprops=dict(facecolor='black', headwidth=2, width=1))
+        ic_plot.plot(ICvoltage, ICdQdV, colours[index])
+
+        # ic_plot.annotate('{}'.format(index), xy=(ICvoltage[int(len(ICvoltage)/2)], ICpeak),
+        #                  xytext=(ICvoltage[int(len(ICvoltage)/2)] + 0.001, ICpeak + 0.01),
+        #                  arrowprops=dict(facecolor='black', headwidth=2))
+
+    if '-fb' in sys.argv:
+        # frob_fig = plt.figure()
+        # frob_fig.suptitle('Frobenius Norm')
+        # frob_plot = frob_fig.add_subplot(111)
+        #
+        # frob_slope_fig = plt.figure()
+        # frob_slope_fig.suptitle('Frobenius Min slope')
+        # frob_slope_plot = frob_slope_fig.add_subplot(111)
+        #
+        # att_mag_fig = plt.figure()
+        # att_mag_fig.suptitle('Attribute magnitudes')
+        # att_mag_plot = att_mag_fig.add_subplot(111)
+        #
+        # att_angle_fig = plt.figure()
+        # att_angle_fig.suptitle('Attribute angles')
+        # att_angle_plot = att_angle_fig.add_subplot(111)
+
+        frobs = handler.get_frob_plots_2(time, abs_case)
+
+        for i in range(0, len(frobs[1][0])):
+            frob = FrobeniusWrapper(time, frobs[1][i])
+
+            normal_frob = frob.normalized
+
+            gaus_frob = frob.normalized.gaussianized
+
+            frob_plot.plot(gaus_frob.time, gaus_frob.data, colours[index])
+
+            ys.append(gaus_frob.min_slope[0])
+
+            mini_slope, steepest_point = frob.min_slope
+
+            if not cases[i] in markers_used:
+                markers_used.append(cases[i])
+
+            frob_slope_plot.plot(known_sohs[index], mini_slope, colours[index], marker=markers[cases[i]])
+            frob_plot.plot(frob.time[steepest_point], frob[steepest_point], colours[index], marker=markers[cases[i]])
+
+            if len(normal_frob.trough_value) > 0:
+                xs.append(normal_frob.trough_value[0])
+            else:
+                xs.append(0)
+
+        # att_plot.plot(xs=xs, ys=ys, zs=zs, c=colours[index])
+        for i in range(1, len(frobs[1][0]) + 1):
+
+            _min = 1000
+            _max = -1
+            for j in known_sohs:
+                _min = j if j < _min else _min
+                _max = j if j > _max else _max
+
+            x_len = _max - _min
+
+            r, theta, phi = spherical_coords(xs[i], ys[i], zs[i])
+
+            att_mag_plot.plot(known_sohs[index], r, colours[index], marker='.')
+            att_angle_plot.plot(known_sohs[index], phi, colours[index], marker='^')
+            att_angle_plot.plot(known_sohs[index], theta, colours[index], marker='v')
+            att_angle_plot.plot(known_sohs[index], phi + theta, colours[index], marker='D')
+
+            att_mag_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, r),
+                                  xytext=(known_sohs[index] + x_len * 0.05, r),
+                                  arrowprops=dict(facecolor='black', headwidth=2, width=1))
+
+            att_angle_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, phi),
+                                    xytext=(known_sohs[index] + x_len * 0.05, phi),
+                                    arrowprops=dict(facecolor='black', headwidth=2, width=1))
+            att_angle_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, theta),
+                                    xytext=(known_sohs[index] + x_len * 0.05, theta),
+                                    arrowprops=dict(facecolor='black', headwidth=2, width=1))
+            att_angle_plot.annotate('{}'.format(abs_case[i - 1]), xy=(known_sohs[index] + x_len * 0.005, phi + theta),
+                                    xytext=(known_sohs[index] + x_len * 0.05, phi + theta),
+                                    arrowprops=dict(facecolor='black', headwidth=2, width=1))
 
     _file_handles.append(matplotlib.lines.Line2D([], [], color=colours[index], label='File {}'.format(fileset[index])))
 
@@ -281,55 +329,78 @@ for input_file, handler in zip(input_files, handlers):
 
 _file_labels = [h.get_label() for h in _file_handles]
 
-_special_angle_handles = []
-_handles = []
 
-_special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='^', color='black', label='Phi'))
-_special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='v', color='black', label='Theta'))
-_special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='D', color='black', label='Phi + Theta'))
+_handles = []
 
 for i in markers_used:
     mark = markers[i]
     _handles.append(matplotlib.lines.Line2D([], [], marker=mark, color='black', label='Case {}'.format(i)))
 
 _labels = [h.get_label() for h in _handles]
-_special_angle_labels = [h.get_label() for h in _special_angle_handles]
+
+plt.xlabel('Known SoH', figure=plt.figure(1))
+plt.ylabel('Minimum Slope', figure=plt.figure(1))
+
+if '-fb' in sys.argv:
+    _special_angle_handles = []
+    _special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='^', color='black', label='Phi'))
+    _special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='v', color='black', label='Theta'))
+    _special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='D', color='black', label='Phi + Theta'))
+    _special_angle_labels = [h.get_label() for h in _special_angle_handles]
+
+    plt.xlabel('Time', figure=plt.figure(2))
+    plt.ylabel('Minimum Norm', figure=plt.figure(2))
+    plt.xlabel('Known SoH', figure=plt.figure(3))
+    plt.ylabel('Minimum Slope', figure=plt.figure(3))
+    plt.xlabel('Known SoH', figure=plt.figure(4))
+    plt.ylabel('Magnitude', figure=plt.figure(4))
+    plt.xlabel('Known SoH', figure=plt.figure(5))
+    plt.ylabel('Angle', figure=plt.figure(5))
+    plt.grid(figure=plt.figure(3))
+
+    lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
+
+    lgd1 = frob_slope_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2,
+                                  borderaxespad=0.)
+    lgd2 = frob_slope_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
+                                  borderaxespad=0.)
+    frob_slope_fig.gca().add_artist(lgd1)
+    frob_slope_fig.savefig(curr + '/Slopes', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
+
+    lgd1 = frob_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2, borderaxespad=0.)
+    lgd2 = frob_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
+                            borderaxespad=0.)
+    frob_fig.gca().add_artist(lgd1)
+    frob_fig.savefig(curr + '/Frobenius', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
+
+    lgd = att_mag_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
+                              borderaxespad=0.)
+    att_mag_fig.savefig(curr + '/Magnitude', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=600)
+
+    lgd1 = att_angle_plot.legend(handles=_special_angle_handles, labels=_special_angle_labels,
+                                 bbox_to_anchor=(1.05, 0.25),
+                                 loc=2, borderaxespad=0.)
+    lgd2 = att_angle_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
+                                 borderaxespad=0.)
+    att_angle_fig.gca().add_artist(lgd1)
+    att_angle_fig.savefig(curr + '/Angle', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
+
+if '-ic' in sys.argv:
+    plt.xlabel('voltage', figure=plt.figure(2))
+    plt.ylabel('dQ / dV', figure=plt.figure(2))
+    #
+    # lgd1 = ic_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2)
+    #
+    # lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2)
+    #
+    # ic_fig.gca().add_artist(lgd1)
+    # ic_fig.savefig(curr + '/Frobenius', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
+
+
 
 logger.log.close()
-plt.xlabel('Time', figure=plt.figure(1))
-plt.ylabel('Minimum Norm', figure=plt.figure(1))
-plt.xlabel('Known SoH', figure=plt.figure(2))
-plt.ylabel('Minimum Slope', figure=plt.figure(2))
-plt.xlabel('Sample', figure=plt.figure(3))
-plt.ylabel('Estimated SoH', figure=plt.figure(3))
-plt.xlabel('Known SoH', figure=plt.figure(4))
-plt.ylabel('Magnitude', figure=plt.figure(4))
-plt.xlabel('Known SoH', figure=plt.figure(5))
-plt.ylabel('Angle', figure=plt.figure(5))
-plt.grid(figure=plt.figure(3))
 
-lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
 
-lgd1 = frob_slope_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2, borderaxespad=0.)
-lgd2 = frob_slope_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
-                              borderaxespad=0.)
-frob_slope_fig.gca().add_artist(lgd1)
-frob_slope_fig.savefig(curr + '/Slopes', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
-
-lgd1 = frob_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2, borderaxespad=0.)
-lgd2 = frob_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-frob_fig.gca().add_artist(lgd1)
-frob_fig.savefig(curr + '/Frobenius', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
-
-lgd = att_mag_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-att_mag_fig.savefig(curr + '/Magnitude', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=600)
-
-lgd1 = att_angle_plot.legend(handles=_special_angle_handles, labels=_special_angle_labels, bbox_to_anchor=(1.05, 0.25),
-                             loc=2, borderaxespad=0.)
-lgd2 = att_angle_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
-                             borderaxespad=0.)
-att_angle_fig.gca().add_artist(lgd1)
-att_angle_fig.savefig(curr + '/Angle', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
 
 plt.show()
