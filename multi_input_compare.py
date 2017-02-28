@@ -244,6 +244,9 @@ for input_file, handler in zip(input_files, handlers):
 
         ic_plot.plot(ICvoltage, ICdQdV, colours[index])
 
+        if not cases[i] in markers_used:
+            markers_used.append(cases[i])
+
         # ic_plot.annotate('{}'.format(index), xy=(ICvoltage[int(len(ICvoltage)/2)], ICpeak),
         #                  xytext=(ICvoltage[int(len(ICvoltage)/2)] + 0.001, ICpeak + 0.01),
         #                  arrowprops=dict(facecolor='black', headwidth=2))
@@ -341,6 +344,9 @@ _labels = [h.get_label() for h in _handles]
 plt.xlabel('Known SoH', figure=plt.figure(1))
 plt.ylabel('Minimum Slope', figure=plt.figure(1))
 
+lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+# soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
+
 if '-fb' in sys.argv:
     _special_angle_handles = []
     _special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='^', color='black', label='Phi'))
@@ -357,9 +363,6 @@ if '-fb' in sys.argv:
     plt.xlabel('Known SoH', figure=plt.figure(5))
     plt.ylabel('Angle', figure=plt.figure(5))
     plt.grid(figure=plt.figure(3))
-
-    lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-    soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
 
     lgd1 = frob_slope_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2,
                                   borderaxespad=0.)
@@ -386,15 +389,16 @@ if '-fb' in sys.argv:
     att_angle_fig.gca().add_artist(lgd1)
     att_angle_fig.savefig(curr + '/Angle', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
 
+
 if '-ic' in sys.argv:
     plt.xlabel('voltage', figure=plt.figure(2))
     plt.ylabel('dQ / dV', figure=plt.figure(2))
-    #
-    # lgd1 = ic_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2)
-    #
+
+    lgd1 = ic_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2)
+
     # lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2)
     #
-    # ic_fig.gca().add_artist(lgd1)
+    ic_fig.gca().add_artist(lgd1)
     # ic_fig.savefig(curr + '/Frobenius', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
 
 
