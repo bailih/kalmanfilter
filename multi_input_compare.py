@@ -252,21 +252,6 @@ for input_file, handler in zip(input_files, handlers):
         #                  arrowprops=dict(facecolor='black', headwidth=2))
 
     if '-fb' in sys.argv:
-        # frob_fig = plt.figure()
-        # frob_fig.suptitle('Frobenius Norm')
-        # frob_plot = frob_fig.add_subplot(111)
-        #
-        # frob_slope_fig = plt.figure()
-        # frob_slope_fig.suptitle('Frobenius Min slope')
-        # frob_slope_plot = frob_slope_fig.add_subplot(111)
-        #
-        # att_mag_fig = plt.figure()
-        # att_mag_fig.suptitle('Attribute magnitudes')
-        # att_mag_plot = att_mag_fig.add_subplot(111)
-        #
-        # att_angle_fig = plt.figure()
-        # att_angle_fig.suptitle('Attribute angles')
-        # att_angle_plot = att_angle_fig.add_subplot(111)
 
         frobs = handler.get_frob_plots_2(time, abs_case)
 
@@ -326,12 +311,11 @@ for input_file, handler in zip(input_files, handlers):
                                     xytext=(known_sohs[index] + x_len * 0.05, phi + theta),
                                     arrowprops=dict(facecolor='black', headwidth=2, width=1))
 
-    _file_handles.append(matplotlib.lines.Line2D([], [], color=colours[index], label='File {}'.format(fileset[index])))
+    _file_handles.append(matplotlib.lines.Line2D([], [], color=colours[index], label='File {}%'.format(known_sohs[index])))
 
     index += 1
 
 _file_labels = [h.get_label() for h in _file_handles]
-
 
 _handles = []
 
@@ -344,7 +328,7 @@ _labels = [h.get_label() for h in _handles]
 plt.xlabel('Known SoH', figure=plt.figure(1))
 plt.ylabel('Minimum Slope', figure=plt.figure(1))
 
-lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1, 1), loc=2, borderaxespad=0.)
 # soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
 
 if '-fb' in sys.argv:
@@ -394,17 +378,10 @@ if '-ic' in sys.argv:
     plt.xlabel('voltage', figure=plt.figure(2))
     plt.ylabel('dQ / dV', figure=plt.figure(2))
 
-    lgd1 = ic_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2)
+    lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, loc=4)
 
-    # lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2)
-    #
-    ic_fig.gca().add_artist(lgd1)
-    # ic_fig.savefig(curr + '/Frobenius', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
-
-
+    ic_fig.gca().add_artist(lgd2)
 
 logger.log.close()
-
-
 
 plt.show()
