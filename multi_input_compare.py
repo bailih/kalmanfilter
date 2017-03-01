@@ -131,7 +131,7 @@ for i in range(len(input_files)):
 handlers = [FilterHandler(sys.argv, *adjusted_configs[i], ini_soc[i], iniV[i]) for i in range(len(input_files))]
 
 colours = []
-# Build a list of colouts
+# Build a list of colours
 for i in range(len(files_to_compare)):
     fileset = files_to_compare[i]
     c_start, c_end = colour_ranges[i]
@@ -149,9 +149,14 @@ for i in range(len(files_to_compare)):
         hex_string = '#{:0>6}'.format(str(hex_value).replace('0x', ''))
         colours.append(hex_string)
 
-soh_fig = plt.figure()
-soh_fig.suptitle('Estimated SOH')
-soh_plot = soh_fig.add_subplot(111)
+totalsoh_fig = plt.figure()
+totalsoh_fig.suptitle('Input+Initial SOH')
+totalsoh_plot = totalsoh_fig.add_subplot(111)
+
+if '-h' in sys.argv:
+    soh_fig = plt.figure()
+    soh_fig.suptitle('Estimated SOH')
+    soh_plot = soh_fig.add_subplot(111)
 
 if '-fb' in sys.argv:
     frob_fig = plt.figure()
@@ -179,7 +184,6 @@ if '-ic' in sys.argv:
 # att_fig.suptitle('Attribute vectors')
 # att_plot = att_fig.add_subplot(111, projection='3d')
 
-
 markers = ['.', 'o', '*', '+', 'x', 'X', 'D', 'p', 'h', 's']
 markers_used = []
 _file_handles = []
@@ -197,6 +201,8 @@ for input_file, handler in zip(input_files, handlers):
     icq = []
     ekf_voltage = []
     ekf_soc = []
+    totalsoh = []
+    totalsohs = []
 
     xs, ys, zs = [[0] for _ in range(3)]
 
@@ -214,16 +220,26 @@ for input_file, handler in zip(input_files, handlers):
             ekf_soc.append(handler.get_ekf_soc()[0])
 
     for i in range(num_of_params):
-        handler.get_soc_init_plots(time, i, abs_case[i] - abs_case[0], abs_case[0])      ##  For printing the soc init
+        ini_soc, lastinisoc = handler.get_soc_init_plots(time, i, abs_case[i] - abs_case[0], abs_case[0])      ##  For printing the soc init
         soh, lastsoh = handler.get_soh_plots_2(time, i, abs_case[i] - abs_case[0], abs_case[0])
         inputsoc, volt, lastinputsoc = handler.get_plotables_2(time, abs_case[i] - abs_case[0], abs_case[0])
 
-        sohs.append(soh)
+        for j in range(len(ini_soc[1])):
+            totalsoh.append(ini_soc[1][j] + inputsoc[1][j])
+        totalsohs.append(totalsoh)
 
-        soh_plot.plot(time, soh[1], colours[index])
-        soh_plot.annotate('{}'.format(abs_case[i]), xy=(sohs[i][0][-1], sohs[i][1][-1]),
-                          xytext=(sohs[i][0][-1] + 200, sohs[i][1][-1]),
-                          arrowprops=dict(facecolor='black', headwidth=2))
+        totalsoh_plot.plot(time, totalsoh,colours[index])
+        totalsoh_plot.annotate('{}'.format(abs_case[i]), xy=(ini_soc[0][-1], totalsohs[i][-1]),
+                               xytext=(ini_soc[0][-1] + 200, totalsohs[i][-1]),
+                               arrowprops=dict(facecolor='black', headwidth=2))
+
+        if '-h' in sys.argv:
+            sohs.append(soh)
+
+            soh_plot.plot(time, soh[1], colours[index])
+            soh_plot.annotate('{}'.format(abs_case[i]), xy=(sohs[i][0][-1], sohs[i][1][-1]),
+                              xytext=(sohs[i][0][-1] + 200, sohs[i][1][-1]),
+                              arrowprops=dict(facecolor='black', headwidth=2))
 
         if '-fb' in sys.argv:
             normal_soh = FrobeniusWrapper(time, soh[1]).normalized
@@ -324,12 +340,33 @@ for i in markers_used:
     _handles.append(matplotlib.lines.Line2D([], [], marker=mark, color='black', label='Case {}'.format(i)))
 
 _labels = [h.get_label() for h in _handles]
+fnumber = 1
 
-plt.xlabel('Known SoH', figure=plt.figure(1))
-plt.ylabel('Minimum Slope', figure=plt.figure(1))
 
-lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1, 1), loc=2, borderaxespad=0.)
-# soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
+plt.xlabel('time', figure=plt.figure(fnumber))
+plt.ylabel('input + initial SOC', figure=plt.figure(fnumber))
+lgd = totalsoh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1, 1), loc=2, borderaxespad=0.)
+
+fnumber += 1
+
+if '-h' in sys.argv:
+    plt.xlabel('time', figure=plt.figure(fnumber))
+    plt.ylabel('Estimated SOH', figure=plt.figure(fnumber))
+
+    lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1, 1), loc=2, borderaxespad=0.)
+    # soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
+    fnumber += 1
+
+
+if '-ic' in sys.argv:
+    plt.xlabel('voltage', figure=plt.figure(fnumber))
+    plt.ylabel('dQ / dV', figure=plt.figure(fnumber))
+
+    lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, loc=4)
+
+    ic_fig.gca().add_artist(lgd2)
+
+    fnumber += 1
 
 if '-fb' in sys.argv:
     _special_angle_handles = []
@@ -338,14 +375,18 @@ if '-fb' in sys.argv:
     _special_angle_handles.append(matplotlib.lines.Line2D([], [], marker='D', color='black', label='Phi + Theta'))
     _special_angle_labels = [h.get_label() for h in _special_angle_handles]
 
-    plt.xlabel('Time', figure=plt.figure(2))
-    plt.ylabel('Minimum Norm', figure=plt.figure(2))
-    plt.xlabel('Known SoH', figure=plt.figure(3))
-    plt.ylabel('Minimum Slope', figure=plt.figure(3))
-    plt.xlabel('Known SoH', figure=plt.figure(4))
-    plt.ylabel('Magnitude', figure=plt.figure(4))
-    plt.xlabel('Known SoH', figure=plt.figure(5))
-    plt.ylabel('Angle', figure=plt.figure(5))
+    plt.xlabel('Time', figure=plt.figure(fnumber))
+    plt.ylabel('Minimum Norm', figure=plt.figure(fnumber))
+    fnumber += 1
+    plt.xlabel('Known SoH', figure=plt.figure(fnumber))
+    plt.ylabel('Minimum Slope', figure=plt.figure(fnumber))
+    fnumber += 1
+    plt.xlabel('Known SoH', figure=plt.figure(fnumber))
+    plt.ylabel('Magnitude', figure=plt.figure(fnumber))
+    fnumber += 1
+    plt.xlabel('Known SoH', figure=plt.figure(fnumber))
+    plt.ylabel('Angle', figure=plt.figure(fnumber))
+    fnumber += 1
     plt.grid(figure=plt.figure(3))
 
     lgd1 = frob_slope_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2,
@@ -374,13 +415,6 @@ if '-fb' in sys.argv:
     att_angle_fig.savefig(curr + '/Angle', bbox_extra_artists=(lgd1, lgd2), bbox_inches='tight', dpi=600)
 
 
-if '-ic' in sys.argv:
-    plt.xlabel('voltage', figure=plt.figure(2))
-    plt.ylabel('dQ / dV', figure=plt.figure(2))
-
-    lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, loc=4)
-
-    ic_fig.gca().add_artist(lgd2)
 
 logger.log.close()
 
