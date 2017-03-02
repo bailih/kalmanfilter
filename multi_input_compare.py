@@ -78,7 +78,7 @@ def spherical_coords(x=0, y=0, z=0):
 
 # clusters = ['input_clusters/high_health_note1.txt',
 #             ]
-clusters = ['input_clusters/first_note1_200ms.txt',
+clusters = ['input_clusters/note1_3.9_to_4.2.txt',
             ]
 
 files_to_compare, known_sohs, colour_ranges= [], [], []
@@ -128,7 +128,7 @@ for i in range(len(input_files)):
             print("iniV: {}".format(iniV))
             break
 
-handlers = [FilterHandler(sys.argv, *adjusted_configs[i], ini_soc[i], iniV[i]) for i in range(len(input_files))]
+handlers = [FilterHandler(['-cki'], *adjusted_configs[i], ini_soc[i], iniV[i]) for i in range(len(input_files))]
 
 colours = []
 # Build a list of colours
@@ -180,10 +180,6 @@ if '-ic' in sys.argv:
     ic_fig.suptitle('IC curve')
     ic_plot = ic_fig.add_subplot(111)
 
-# att_fig = plt.figure()
-# att_fig.suptitle('Attribute vectors')
-# att_plot = att_fig.add_subplot(111, projection='3d')
-
 markers = ['.', 'o', '*', '+', 'x', 'X', 'D', 'p', 'h', 's']
 markers_used = []
 _file_handles = []
@@ -201,7 +197,6 @@ for input_file, handler in zip(input_files, handlers):
     icq = []
     ekf_voltage = []
     ekf_soc = []
-    totalsoh = []
     totalsohs = []
 
     xs, ys, zs = [[0] for _ in range(3)]
@@ -214,21 +209,21 @@ for input_file, handler in zip(input_files, handlers):
         voltage, current, dt = map(float, line[:3])
         handler.update(dt, voltage, current, 1)
         time.append(time[-1] + dt if time else dt)
-        if '-ic' in sys.argv:
-
-            ekf_voltage.append(handler.get_ekf_voltage()[0])
-            ekf_soc.append(handler.get_ekf_soc()[0])
 
     for i in range(num_of_params):
-        ini_soc, lastinisoc = handler.get_soc_init_plots(time, i, abs_case[i] - abs_case[0], abs_case[0])      ##  For printing the soc init
+        totalsoh = []
+
         soh, lastsoh = handler.get_soh_plots_2(time, i, abs_case[i] - abs_case[0], abs_case[0])
+
+        ini_soc, lastinisoc = handler.get_soc_init_plots(time, i, abs_case[i] - abs_case[0], abs_case[0])
+
         inputsoc, volt, lastinputsoc = handler.get_plotables_2(time, abs_case[i] - abs_case[0], abs_case[0])
 
         for j in range(len(ini_soc[1])):
             totalsoh.append(ini_soc[1][j] + inputsoc[1][j])
         totalsohs.append(totalsoh)
 
-        totalsoh_plot.plot(time, totalsoh,colours[index])
+        totalsoh_plot.plot(time, totalsoh, colours[index])
         totalsoh_plot.annotate('{}'.format(abs_case[i]), xy=(ini_soc[0][-1], totalsohs[i][-1]),
                                xytext=(ini_soc[0][-1] + 200, totalsohs[i][-1]),
                                arrowprops=dict(facecolor='black', headwidth=2))
@@ -245,27 +240,22 @@ for input_file, handler in zip(input_files, handlers):
             normal_soh = FrobeniusWrapper(time, soh[1]).normalized
             zs.append(normal_soh.min_slope[0])
 
-    if '-ic' in sys.argv:
-        ICvoltage = []
-        ICdQdV = []
+        if '-ic' in sys.argv:
+            ICvoltage = []
+            ICdQdV = []
 
-        ICcurve = IC_handler(ekf_voltage, ekf_soc)
+            ICcurve = IC_handler(volt[1], inputsoc[1])
 
-        ICvoltage = ICcurve.get_IC_volt()
+            ICvoltage = ICcurve.get_IC_volt()
 
-        ICdQdV = ICcurve.get_IC_QV()
+            ICdQdV = ICcurve.get_IC_QV()
 
-        ICpeak = ICcurve.get_IC_peak()
+            ICpeak = ICcurve.get_IC_peak()
 
+            ic_plot.plot(ICvoltage, ICdQdV, colours[index])
 
-        ic_plot.plot(ICvoltage, ICdQdV, colours[index])
-
-        if not cases[i] in markers_used:
-            markers_used.append(cases[i])
-
-        # ic_plot.annotate('{}'.format(index), xy=(ICvoltage[int(len(ICvoltage)/2)], ICpeak),
-        #                  xytext=(ICvoltage[int(len(ICvoltage)/2)] + 0.001, ICpeak + 0.01),
-        #                  arrowprops=dict(facecolor='black', headwidth=2))
+            if not cases[i] in markers_used:
+                markers_used.append(cases[i])
 
     if '-fb' in sys.argv:
 
@@ -353,7 +343,7 @@ if '-h' in sys.argv:
     plt.xlabel('time', figure=plt.figure(fnumber))
     plt.ylabel('Estimated SOH', figure=plt.figure(fnumber))
 
-    lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1, 1), loc=2, borderaxespad=0.)
+    lgd2 = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1, 1), loc=2, borderaxespad=0.)
     # soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
     fnumber += 1
 
@@ -362,9 +352,9 @@ if '-ic' in sys.argv:
     plt.xlabel('voltage', figure=plt.figure(fnumber))
     plt.ylabel('dQ / dV', figure=plt.figure(fnumber))
 
-    lgd2 = ic_plot.legend(handles=_file_handles, labels=_file_labels, loc=4)
+    lgd3 = ic_plot.legend(handles=_file_handles, labels=_file_labels, loc=4)
 
-    ic_fig.gca().add_artist(lgd2)
+    ic_fig.gca().add_artist(lgd3)
 
     fnumber += 1
 

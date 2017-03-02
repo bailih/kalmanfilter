@@ -66,7 +66,7 @@ def floatOrNone(string):
 # fileName = 'note1_input_43_2'
 
 # fileName = '200ms/note1_input_24_200ms'
-fileName = '200ms/note1_input_94_200ms'
+fileName = 'note1_input_94_unknown_init_soc_2'
 # fileName = 'note1_input_43'
 # fileName = 'note1_input_54'
 # fileName = 'note1_input_87'
@@ -172,9 +172,6 @@ for line in inputF:
         sum_voltage_error += np.absolute(handler.get_voltage_error(voltage))
         sum_soc_error += np.absolute(handler.get_soc_error(soc_tracker.avg_soc[-1]))
 
-    if '-ic' in sys.argv:
-        ekf_voltage.append(handler.get_ekf_voltage()[0])
-        ekf_soc.append(handler.get_ekf_soc()[0])
 
 # fig = plt.figure(1)
 # fig.canvas.set_window_title(fileName)
@@ -294,7 +291,8 @@ if '-cki' in sys.argv:
         position += 1
 
         if '-ic' in sys.argv:
-            ICcurve = IC_handler(ekf_voltage, ekf_soc)
+
+            ICcurve = IC_handler(plt_volts[1], plt_soc[1])
 
             ICvoltage = ICcurve.get_IC_volt()
 

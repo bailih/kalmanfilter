@@ -777,7 +777,7 @@ class KalmanSoC(Kalman):
             temp.append(self.X[i][self.order + 1, 0])
         return temp
 
-    def get_soh(self, version):
+    def get_soh(self):
         temp = []
         for i in range(len(self.X)):
             temp.append(self.X[i][self.order + 2, 0])

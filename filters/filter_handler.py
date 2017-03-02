@@ -219,7 +219,7 @@ class FilterHandler:
                 frobv.append(norm(temp[i]))
             dict['frob'].append(frobv)
 
-            temp = filter.get_soh(0)
+            temp = filter.get_soh()
             for i in self.for_coul_total_popped:
                 temp.insert(i, -1)
             dict['soh'].append(temp)
@@ -317,7 +317,10 @@ class FilterHandler:
             if 'soh' in filter_dict:
                 temp = []
                 for i in range(len(filter_dict['soh'])):
+                    # try:
                     temp.append(filter_dict['soh'][i][abs_version])
+                    # except:
+                    #     print("i: {}; adbs_version: {}".format(i, abs_version))
                 soh += (t, temp, filter_dict['main_colour'])
         print("SoH Case {}: {}".format(abs_version + version_offset, soh[-2][-1]))
         lastsoh = soh[-2][-1]
@@ -429,24 +432,9 @@ class FilterHandler:
             temp2 = self.filters['ekfi_coul']['filter'].get_simulated_voltage_new()
             for i in range(self.filters['ekfi_coul']['filter'].dim):
                 temp.append(temp2[i])
-                return temp
+            return temp
         else:
             return 0
-
-    # def get_voltage_plot(self, t: list, abs_version, version_offset):
-    #     soh = ()
-    #     filters = self.filters
-    #
-    #     for key in filters:
-    #         filter_dict = filters[key]
-    #         if 'voltage' in filter_dict:
-    #             temp = []
-    #             for i in range(len(filter_dict['voltage'])):
-    #                 temp.append(filter_dict['soh'][i][abs_version])
-    #             soh += (t, temp, filter_dict['main_colour'])
-    #     print("SoH Case {}: {}".format(abs_version + version_offset, soh[-2][-1]))
-    #     lastsoh = soh[-2][-1]
-    #     return soh, lastsoh
 
     def get_ekf_soc(self):
 
