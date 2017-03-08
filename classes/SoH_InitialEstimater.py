@@ -16,9 +16,16 @@ class HealthEstimater():
         self.derivative = []
         self.derivative_point = 0
 
-    def get_model_points(self, window_size=2500, order=1):
+        self.targets = [[0, 40, ],
+                        [41, 50, ],
+                        [51, 100, ]]
+
+    def _get_model_points(self, window_size=2500, order=1):
         model_points = []
         for i in range(len(self.pulse_data) - window_size)
             coeffs = np.polyfit()
             p = np.poly1d()
             model_points.append(p(i))
+
+    def _test(self):
+        print("Testing HealthEstimator...")
