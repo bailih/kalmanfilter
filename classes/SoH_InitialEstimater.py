@@ -105,12 +105,25 @@ class HealthEstimater():
             der_points.append(dp(int(i + window_size / 2)))
         return der_points
 
-    def _plot_derivative(self):
+    def _plot_derivative(self, title=''):
         time = []
         for line in self.pulse_data[self.pulse_end_point:]:
             time.append(line[0])
-        plt.plot(time[int(self.window_size / 2): int(-self.window_size / 2)], self.derivative_points)
-        plt.show()
+
+        diff = max(self.derivative_points) - min(self.derivative_points)
+        plot_range = [min(self.derivative_points) + i / 100 * diff for i in range(100)]
+        plt.figure()
+        plt.plot(time[int(self.window_size / 2): int(-self.window_size / 2)],
+                 self.derivative_points,
+                 label='modeled derivative')
+        plt.plot([self.evaluation_time for _ in range(100)],
+                 plot_range,
+                 label='Evaluation Time')
+        plt.title(title)
+        plt.xlabel('Time')
+        plt.ylabel('dV / dt')
+        plt.legend()
+        plt.show(block=False)
 
     def _estimate_health(self):
         diff = 1000000
@@ -140,30 +153,37 @@ class HealthEstimater():
         self.soh_guess = self._estimate_health()
 
 
-def _test():
-    filename = 'C:/Users/jacob.law/Desktop/test1/all/13_3/6.txt'
-    with open(filename, 'r') as content_file:
-        content = content_file.read()
-
-    lines = content.split('\n')
-    lines.pop(0)  # first is header
-    lines.pop(-1)
-    raw_data = [line.split('\t') for line in lines]
+def _test(files):
+    filenames = files
 
     print("Testing HealthEstimator...")
 
-    float_raw_data = []
-    for line in raw_data:
-        float_raw_data.append([float(line[0]), float(line[1]), float(line[2])])
+    for filename in filenames:
+        with open(filename, 'r') as content_file:
+            content = content_file.read()
 
-    he = HealthEstimater(float_raw_data)
-    he.calculate_model_derivatives()
-    he.calculate_evaluation_point()
-    he.calculate_health()
-    health = he.get_health()
-    print('The derivative at {}s is {}'.format(he.evaluation_time, he.derivative_point))
-    print('From pulse recovery derivative, I think SoH is between {}% and {}%'.format(*health))
-    he._plot_derivative()
+        lines = content.split('\n')
+        lines.pop(0)  # first is header
+        lines.pop(-1)
+        raw_data = [line.split('\t') for line in lines]
+
+        float_raw_data = []
+        for line in raw_data:
+            float_raw_data.append([float(line[0]), float(line[1]), float(line[2])])
+
+        he = HealthEstimater(float_raw_data)
+        he.calculate_model_derivatives()
+        he.calculate_evaluation_point()
+        he.calculate_health()
+        health = he.get_health()
+        print('The derivative for {} at {}s is {}'.format(filename, he.evaluation_time, he.derivative_point))
+        print('From pulse recovery derivative, I think SoH is between {}% and {}%'.format(*health))
+        he._plot_derivative(title=filename)
 
 
-_test()
+files = ['C:/Users/jacob.law/Desktop/test1/all/55/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/99/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/13/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/21/1.txt']
+_test(files)
+plt.show()
