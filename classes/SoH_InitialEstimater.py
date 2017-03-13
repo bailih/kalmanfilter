@@ -3,14 +3,15 @@ import matplotlib.pyplot as plt
 
 
 class HealthEstimater():
-    def __init__(self, pulse_data, sample_rate=0.01):
+    def __init__(self, pulse_data, return_, sample_rate=0.01):
         self.sample_rate = sample_rate
         self.pulse_data = pulse_data
-        self.v_init = self.pulse_data[0]
 
         self.current_threshold = 0.01  # miliamples
-        self.targets = [[0, 40, -0.0000999],
-                        [41, 60, -0.000163],
+        # self.targets = [[0, 40, -0.0000999],
+        #                 [41, 60, -0.000163 ],
+        #                 [61, 100, -0.0002291]]
+        self.targets = [[0, 60, -0.000163],
                         [61, 100, -0.0002291]]
         self.window_size = 2500
 
@@ -26,6 +27,7 @@ class HealthEstimater():
         self.derivative_points = []
         self.derivative_point = None
 
+        self.result = return_
         self.soh_guess = None
 
     def _get_pulse_end_point(self, threshold=10.0):
@@ -33,7 +35,7 @@ class HealthEstimater():
         currents = []
         offset = self.pulse_start_point + 500
         counter = offset
-        for line in self.pulse_data:
+        for line in self.pulse_data[offset:]:
             currents.append(line[2])
         for current in currents[offset:]:
             if current <= threshold:
@@ -41,7 +43,9 @@ class HealthEstimater():
                 break
             counter += 1
 
-        print('Current did not go below threshold of {} mA!'.format(threshold)) if point == -1 else None
+        print('Current did not go below threshold of {} mA!'.format(threshold)) if point == -1 else print(
+            'Pulse end @ {}'.format(threshold))
+        print(self.pulse_data[0][-1])
         return point
 
     def _get_pulse_start_point(self, threshold=10.0):
@@ -54,7 +58,8 @@ class HealthEstimater():
                 point = currents.index(current)
                 break
 
-        print('Current did not exceed threshold of {} mA!'.format(threshold)) if point == -1 else None
+        print('Current did not exceed threshold of {} mA!'.format(threshold)) if point == -1 else print(
+            'Pulse start @ {}'.format(threshold))
         return point
 
     def _get_model_points(self, order=1):
@@ -123,7 +128,7 @@ class HealthEstimater():
         plt.xlabel('Time')
         plt.ylabel('dV / dt')
         plt.legend()
-        plt.show(block=False)
+        plt.show()
 
     def _estimate_health(self):
         diff = 1000000
@@ -151,6 +156,15 @@ class HealthEstimater():
 
     def calculate_health(self):
         self.soh_guess = self._estimate_health()
+
+    def go(self):
+        self.calculate_model_derivatives()
+        self.calculate_evaluation_point()
+        self.calculate_health()
+        # print('The derivative at {}s is {}'.format(self.evaluation_time, self.derivative_point))
+        # print('From pulse recovery derivative, I think SoH is between {}% and {}%'.format(*self.soh_guess))
+        self.result[0] = '{}-{} % SoH'.format(*self.soh_guess)
+        # self._plot_derivative()
 
 
 def _test(files):
@@ -180,10 +194,11 @@ def _test(files):
         print('From pulse recovery derivative, I think SoH is between {}% and {}%'.format(*health))
         he._plot_derivative(title=filename)
 
-
-files = ['C:/Users/jacob.law/Desktop/test1/all/55/1.txt',
-         'C:/Users/jacob.law/Desktop/test1/all/99/1.txt',
-         'C:/Users/jacob.law/Desktop/test1/all/13/1.txt',
-         'C:/Users/jacob.law/Desktop/test1/all/21/1.txt']
-_test(files)
-plt.show()
+# files = ['C:/Users/jacob.law/Desktop/test1/all/55/1.txt',
+#          'C:/Users/jacob.law/Desktop/test1/all/99/1.txt',
+#          'C:/Users/jacob.law/Desktop/test1/all/13/1.txt',
+#          'C:/Users/jacob.law/Desktop/test1/all/21/1.txt',
+#          'C:/Users/jacob.law/Desktop/test1/all/50/1.txt',
+#          'C:/Users/jacob.law/Desktop/test1/all/9/1.txt',]
+# _test(files)
+# plt.show()
