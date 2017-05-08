@@ -12,6 +12,30 @@ import os
 from shutil import copyfile
 import matplotlib
 
+from NN.readTextFiles import PulseParams
+from NN.trainedNN import *
+from NN.sampleTrainedNN_initialize import *
+
+
+class NN():
+    def __init__(self):
+        self.input = []
+        self.output = []
+        sampleTrainedNN_initialize()
+
+    def loadInput(self, params):
+        self.input = params
+
+    def getOutput(self):
+        return self.output
+
+    def classify(self, params):
+        self.loadInput(params)
+
+        self.output = classify(self.input)
+
+        return self.getOutput()
+
 
 class Logger(object):
     def __init__(self, dir):
@@ -27,6 +51,17 @@ class Logger(object):
         # this handles the flush command by doing nothing.
         # you might want to specify some extra behavior here.
         pass
+
+
+def seperatedata(input):
+    pulse = []
+    charge = []
+
+    # 85 seconds is the pulse
+    pulse = input[:8500]
+    charge = input[8500:]
+
+    return pulse, charge
 
 
 now = datetime.datetime.now()
@@ -77,7 +112,7 @@ def spherical_coords(x=0, y=0, z=0):
 
 # clusters = ['input_clusters/high_health_note1.txt',
 #             ]
-clusters = ['input_clusters/first_note1_200ms.txt',
+clusters = ['goodClusters/note1_pulse.txt',
             ]
 
 files_to_compare, known_sohs, colour_ranges= [], [], []
@@ -95,6 +130,33 @@ for cluster in clusters:
 
 
 input_files = [InputFile(filename) for filesets in files_to_compare for filename in filesets]
+pulse_files = [0] * len(input_files)
+for i in range(len(input_files)):
+    pulse_files[i], input_files[i].lines = seperatedata(input_files[i].lines)
+    input_files[i].lines = input_files[i].lines[0::20]
+
+for i in range(len(input_files)):
+    temp = input_files[i].lines
+    input_files[i].lines = []
+    for line in temp:
+        if float(line.split('\t')[1]) > 0.010:
+            input_files[i].lines.append(line)
+
+classes = []
+for pulse in pulse_files:
+    pp = PulseParams(0.01, 20, 4.2, 0.5, pulse)
+    params = pp.calculateParams()
+    param = [params['Vloss'], params['IRecR1'], params['OCVMinAmp']]
+    net = NN()
+    classes.append(net.classify(param))
+
+for i in range(len(input_files)):
+    counter = 0
+    lineCounter = 0
+    for line in input_files[i]:
+        input_files[i].lines[int(lineCounter)] += '\t' + str(counter)
+        counter += 0.01
+        lineCounter += 1
 
 adjusted_configs = [input_files[i].adjustConfig(*deepcopy(config.get()))
                     for i in range(len(input_files))]
@@ -108,7 +170,6 @@ tracker_kwargs = {
 
 ini_soc = []
 for i in range(len(input_files)):
-
     for key in tracker_kwargs:
         try:
             tracker_kwargs[key] = input_files[i][key]
@@ -117,8 +178,12 @@ for i in range(len(input_files)):
                 print("init_soc: {}".format(ini_soc))
         except KeyError:
             print('Using default value for key {}: {}'.format(key, tracker_kwargs[key]))
+            if key == 'init_soc':
+                ini_soc.append(float(tracker_kwargs[key]))
+                print("init_soc: {}".format(ini_soc))
 
 iniV = []
+counter = 0
 for i in range(len(input_files)):
     for line in (input_files[i]):
         tempV, current, dt = map(float, line[:3])
@@ -127,7 +192,8 @@ for i in range(len(input_files)):
             print("iniV: {}".format(iniV))
             break
 
-handlers = [FilterHandler(sys.argv, *adjusted_configs[i], ini_soc[i], iniV[i]) for i in range(len(input_files))]
+handlers = [FilterHandler(sys.argv, *adjusted_configs[i], ini_soc[i], iniV[i], classes[i]) for i in
+            range(len(input_files))]
 
 colours = []
 # Build a list of colouts
@@ -192,16 +258,16 @@ for input_file, handler in zip(input_files, handlers):
         abs_case = handler.filters['ekfi_coul']['filter'].absolute_index
         num_of_params = handler.filters['ekfi_coul']['filter'].dim
 
+    counterrr =0
     for line in input_file:
         voltage, current, dt = map(float, line[:3])
         handler.update(dt, voltage, current, 1)
         time.append(time[-1] + dt if time else dt)
+        counterrr += 1
 
     xs, ys, zs = [[0] for _ in range(3)]
 
     frobs = handler.get_frob_plots_2(time, abs_case)
-
-    # print(frobs[1])
 
     for i in range(0, len(frobs[1][0])):
         frob = FrobeniusWrapper(time, frobs[1][i])
@@ -309,7 +375,6 @@ plt.grid(figure=plt.figure(3))
 
 lgd = soh_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 soh_fig.savefig(curr + '/SoH', bbox_extra_artists=(lgd,), bbox_inches='tight', dpi=1200)
-
 lgd1 = frob_slope_plot.legend(handles=_handles, labels=_labels, bbox_to_anchor=(1.05, 0.25), loc=2, borderaxespad=0.)
 lgd2 = frob_slope_plot.legend(handles=_file_handles, labels=_file_labels, bbox_to_anchor=(1.05, 1), loc=2,
                               borderaxespad=0.)

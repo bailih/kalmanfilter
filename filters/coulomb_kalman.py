@@ -36,10 +36,10 @@ class Kalman:
 
         self.order = order  # Order of equivalent circuit
         self.dim = len(vals.getX())
-        print("dim: {}".format(self.dim))
-
+        # print("dim: {}".format(self.dim))
+        #
         self.case = vals.getcase()
-        print("case: {}".format(self.case))
+        # print("case: {}".format(self.case))
 
         baseH = np.matrix(np.zeros((1, order + 2)))
         baseK = np.matrix(np.zeros((order + 2, order + 2)))
@@ -175,7 +175,7 @@ class Kalman:
 
             if abs(self.voltage_error[i]) < 0.1 and self.conver_step[i] == 0:
                 self.conver_step[i] = self.iter
-                print("converge step ({}): {}".format(self.absolute_index[i], self.conver_step[i]))
+                # print("converge step ({}): {}".format(self.absolute_index[i], self.conver_step[i]))
 
         # Posteriori estimate (UPDATE)
         # Update kalman gain:
@@ -440,10 +440,10 @@ class KalmanSoC(Kalman):
         state variable: V1, inputSoC, SoH, initSoC
     """
 
-    def __init__(self, order, Q, P, R, X, p, c, inisoc, iniV):
+    def __init__(self, order, Q, P, R, X, p, c, inisoc, iniV, classes):
         super(KalmanSoC, self).__init__(order, Q, P, R, X, p, c, inisoc, iniV)
-
-        vals = matrixHolder(p['cnom'], inisoc, iniV)
+        p['cnom'] = 9000
+        vals = matrixHolder(p['cnom'], inisoc, iniV, classes)
 
         self.order = order  # Order of equivalent circuit
         self.dim = len(vals.getX())
@@ -600,7 +600,7 @@ class KalmanSoC(Kalman):
 
             if abs(self.voltage_error[i]) < 0.1 and self.conver_step[i] == 0:
                 self.conver_step[i] = self.iter
-                print("converge step ({}): {}".format(self.absolute_index[i], self.conver_step[i]))
+                # print("converge step ({}): {}".format(self.absolute_index[i], self.conver_step[i]))
 
         # Posteriori estimate (UPDATE)
         # Update kalman gain:

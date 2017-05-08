@@ -1,9 +1,15 @@
+'''
+This class uses the data from a charge pulse to give a very rough estimate of the range of SoH of the battery
+
+the return_ variable is where the result is put, if you want to multithread it since this takes a couple of minutes to run
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 class HealthEstimater():
-    def __init__(self, pulse_data, return_, sample_rate=0.01):
+    def __init__(self, pulse_data, return_=None, sample_rate=0.01):
         self.sample_rate = sample_rate
         self.pulse_data = pulse_data
 
@@ -128,7 +134,7 @@ class HealthEstimater():
         plt.xlabel('Time')
         plt.ylabel('dV / dt')
         plt.legend()
-        plt.show()
+        plt.show(block=False)
 
     def _estimate_health(self):
         diff = 1000000
@@ -194,11 +200,12 @@ def _test(files):
         print('From pulse recovery derivative, I think SoH is between {}% and {}%'.format(*health))
         he._plot_derivative(title=filename)
 
-# files = ['C:/Users/jacob.law/Desktop/test1/all/55/1.txt',
-#          'C:/Users/jacob.law/Desktop/test1/all/99/1.txt',
-#          'C:/Users/jacob.law/Desktop/test1/all/13/1.txt',
-#          'C:/Users/jacob.law/Desktop/test1/all/21/1.txt',
-#          'C:/Users/jacob.law/Desktop/test1/all/50/1.txt',
-#          'C:/Users/jacob.law/Desktop/test1/all/9/1.txt',]
-# _test(files)
-# plt.show()
+
+files = ['C:/Users/jacob.law/Desktop/test1/all/55/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/99/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/13/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/21/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/50/1.txt',
+         'C:/Users/jacob.law/Desktop/test1/all/9/1.txt', ]
+_test(files)
+plt.show()

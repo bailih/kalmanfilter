@@ -16,7 +16,7 @@ class FilterHandler:
     choose which filters to use, and keeps track of all necessary information.
     '''
 
-    def __init__(self, argv: list, kalman_config: list, svsf_config: list, inisoc: float, iniV: float):
+    def __init__(self, argv: list, kalman_config: list, svsf_config: list, inisoc: float, iniV: float, classes):
 
         filters = {}
 
@@ -91,7 +91,7 @@ class FilterHandler:
 
         if '-cki' in argv:
             filters['ekfi_coul'] = {
-                'filter': KalmanCSoC(*kalman_config, inisoc, iniV),
+                'filter': KalmanCSoC(*kalman_config, inisoc, iniV, classes),
                 'soc': [],
                 'soh': [],
                 'soc_init': [],
@@ -318,7 +318,7 @@ class FilterHandler:
                 for i in range(len(filter_dict['soh'])):
                     temp.append(filter_dict['soh'][i][abs_version])
                 soh += (t, temp, filter_dict['main_colour'])
-        print("SoH Case {}: {}".format(abs_version + version_offset, soh[-2][-1]))
+        print("SoH Case {}: {} -> {}".format(abs_version + version_offset, soh[-2][-1], soh[-2][-1] / 9000))
         lastsoh = soh[-2][-1]
         return soh, lastsoh
 

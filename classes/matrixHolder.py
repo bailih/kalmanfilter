@@ -19,7 +19,7 @@ class matrixHolder:
     6: 3.8~3.9 Vinit 70 < SoH < 90
     '''
 
-    def __init__(self, capacity, inisoc, iniV):
+	def __init__(self, capacity, inisoc, iniV, classes):
 
         case0_X = np.matrix([[0],   #case 0
                            [0],
@@ -164,46 +164,51 @@ class matrixHolder:
 
         elif 3.8 >= iniV >= 3.5:
 
-            self.X.append(case1_X)
-            self.Q.append(case1_Q)
-            self.P.append(case1_P)
-            self.R.append(np.matrix([10]))
-            self.case.append(1)
-
-            self.X.append(case2_X)
-            self.Q.append(case2_Q)
-            self.P.append(case2_P)
-            self.R.append(np.matrix([0.0001]))
-            self.case.append(2)
+			if classes == 0 or classes == 1 or classes == 2:
+				self.X.append(case1_X)
+				self.Q.append(case1_Q)
+				self.P.append(case1_P)
+				self.R.append(np.matrix([10]))
+				self.case.append(1)
+			else:
+				self.X.append(case2_X)
+				self.Q.append(case2_Q)
+				self.P.append(case2_P)
+				self.R.append(np.matrix([0.0001]))
+				self.case.append(2)
             length = len(self.X)
             if any(len(lst) != length for lst in [self.Q, self.P, self.R]):
                 raise RuntimeError(
                     "One or more of the EKF matrix parameters are missing! check matrixHolder.py -> __init__")
 
         elif iniV > 3.8:
-            self.X.append(case3_X)
-            self.Q.append(case3_Q)
-            self.P.append(case3_P)
-            self.R.append(np.matrix([10]))
-            self.case.append(3)
+			if classes == 1:
+				self.X.append(case3_X)
+				self.Q.append(case3_Q)
+				self.P.append(case3_P)
+				self.R.append(np.matrix([10]))
+				self.case.append(3)
 
-            self.X.append(case4_X)
-            self.Q.append(case4_Q)
-            self.P.append(case4_P)
-            self.R.append(np.matrix([0.001]))
-            self.case.append(4)
+			elif classes == 3:
+				self.X.append(case4_X)
+				self.Q.append(case4_Q)
+				self.P.append(case4_P)
+				self.R.append(np.matrix([0.001]))
+				self.case.append(4)
 
-            self.X.append(case5_X)
-            self.Q.append(case5_Q)
-            self.P.append(case5_P)
-            self.R.append(np.matrix([0.0001]))
-            self.case.append(5)
+			elif classes == 0:
+				self.X.append(case5_X)
+				self.Q.append(case5_Q)
+				self.P.append(case5_P)
+				self.R.append(np.matrix([0.0001]))
+				self.case.append(5)
 
-            self.X.append(case6_X)
-            self.Q.append(case6_Q)
-            self.P.append(case6_P)
-            self.R.append(np.matrix([10]))
-            self.case.append(6)
+			elif classes == 2:
+				self.X.append(case6_X)
+				self.Q.append(case6_Q)
+				self.P.append(case6_P)
+				self.R.append(np.matrix([10]))
+				self.case.append(6)
 
             length = len(self.X)
             if any(len(lst) != length for lst in [self.Q, self.P, self.R]):

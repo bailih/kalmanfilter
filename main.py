@@ -21,9 +21,45 @@ import config
 from classes import SoCTracker, InputFile, IC_handler
 from filters import FilterHandler
 
+from NN.readTextFiles import PulseParams
+from NN.trainedNN import *
+from NN.sampleTrainedNN_initialize import *
+from NN.progerssBar import progressBar
+
+
+class NN():
+    def __init__(self):
+        self.input = []
+        self.output = []
+        sampleTrainedNN_initialize()
+
+    def loadInput(self, params):
+        self.input = params
+
+    def getOutput(self):
+        return self.output
+
+    def classify(self, params):
+        self.loadInput(params)
+
+        self.output = classify(self.input)
+
+        return self.getOutput()
+
 
 # Functions
 # =============================================================================
+
+def seperatedata(input):
+    pulse = []
+    charge = []
+
+    # 85 seconds is the pulse
+    pulse = input[:9000]
+    charge = input[9000:]
+
+    return pulse, charge
+
 def plot(max_pos, pos, t, d_real, d_other, title, xlabel, ylabel, l_sim, l_real, lb, ub):
     plt.subplot(max_pos, 1, pos)
     plt.plot(t, d_real, 'b-', *d_other)
@@ -65,7 +101,7 @@ def floatOrNone(string):
 # Initialization
 # fileName = 'note1_input_43_2'
 
-fileName = 'note1_input_94_200ms'
+fileName = '37'
 # fileName = 'note1_input_43'
 # fileName = 'note1_input_54'
 # fileName = 'note1_input_87'
@@ -74,7 +110,7 @@ fileName = 'note1_input_94_200ms'
 # fileName = 'note1_input_74'
 # fileName = 'note1_input_94_unknown_init_soc'
 
-inputF = InputFile('Good_Inputs/200ms/' + fileName + '.txt')
+inputF = InputFile('Good_Inputs/pulse/' + fileName + '.txt')
 
 kalman_config, svsf_config = inputF.adjustConfig(*config.get()) # Read config file
 voltage_actual = []
@@ -88,6 +124,19 @@ sum_voltage_error = 0.0
 sum_soc_error = 0.0
 n = 0.0
 
+pulse_file, inputF.lines = seperatedata(inputF.lines)
+
+temp = inputF.lines
+inputF.lines = []
+for line in temp:
+    if float(line.split('\t')[1]) > 0.10:
+        inputF.lines.append(line)
+
+pp = PulseParams(0.01, 20, 4.2, 0.5, pulse_file)
+params = pp.calculateParams()
+param = [params['Vloss'], params['IRecR1'], params['OCVMinAmp']]
+net = NN()
+classes = net.classify(param)
 
 
 # Init dict with default values
@@ -123,21 +172,30 @@ if '-ic' in sys.argv:
 ''' version is which set of parameters we want to look at the outputs for '''
 version = 1
 for line in inputF:
-    iniV, current, dt = map(float, line[:3])
+    try:
+        iniV, current, dt = map(float, line[:3])
+    except:
+        dt = _DT
+        iniV, current = map(float, line[:2])
     if iniV != 0:
         print("iniV: {}".format(iniV))
         break
 
-handler = FilterHandler(sys.argv, kalman_config, svsf_config, ini_soc, iniV)
+handler = FilterHandler(sys.argv, kalman_config, svsf_config, ini_soc, iniV, classes)
+bar = progressBar("Running filter...")
 for line in inputF:
     counter += 1
     tempx.append(counter)
-
+    bar.update(counter / len(inputF))
     # if counter == 3000:
     #     break
     # Read current/voltage, then perform kalman update
     # line[1] is current and line[0] is voltage
-    voltage, current, dt = map(float, line[:3])
+    try:
+        voltage, current, dt = map(float, line[:3])
+    except:
+        dt = _DT
+        voltage, current = map(float, line[:2])
     tempy.append(-current)
 
     balance_info = (floatOrNone(line[3]), floatOrNone(line[4])) if len(line) > 4 else (None, None)
@@ -175,6 +233,7 @@ for line in inputF:
         ekf_voltage.append(handler.get_ekf_voltage()[0])
         ekf_soc.append(handler.get_ekf_soc()[0])
 
+bar.close()
 # fig = plt.figure(1)
 # fig.canvas.set_window_title(fileName)
 # # plt.subplot(2, 1, 1)
